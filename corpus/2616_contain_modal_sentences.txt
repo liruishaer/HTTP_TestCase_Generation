@@ -1,0 +1,2455 @@
+[.* has .* to .*]
+In addition, the proliferation of incompletely-implemented applications calling themselves "HTTP/1.0" has necessitated a protocol version change in order for two communicating applications to determine each other's true capabilities.
+
+
+
+[.* can .*]
+A network data object or service that can be identified by a URI, as defined in section 3.2.
+
+
+
+[.* may .*]
+Resources may be available in multiple representations (e.g, multiple languages, data formats, size, and resolutions) or vary in other ways.
+
+
+
+[.* may .*]
+There may exist multiple representations associated with a particular response status.
+
+
+
+[.* can .*]
+The representation of entities in any response can be negotiated (including error responses).
+
+
+
+[.* may .*]
+A resource may have one, or more than one, representation(s) associated with it at any given instant.
+
+
+
+[.* may .*]
+Any given program may be capable of being both a client and a server; our use of these terms refers only to the role being performed by the program for a particular connection, rather than to the program's capabilities in general.
+
+
+
+[.* may .*]
+Likewise, any server may act as an origin server, proxy, gateway, or tunnel, switching behavior based on the nature of each request.
+
+
+
+[.* either .* or .*]
+Except where either transparent or non-transparent behavior is explicitly stated, the HTTP proxy requirements apply to both types of proxies.
+
+
+
+[.* may .*]
+Unlike a proxy, a gateway receives requests as if it were the origin server for the requested resource; the requesting client may not be aware that it is communicating with a gateway.
+
+
+
+[.* may .*]
+Once active, a tunnel is not considered a party to the HTTP communication, though the tunnel may have been initiated by an HTTP request.
+
+
+
+[.* may .*]
+Any client or server may include a cache, though a cache cannot be used by a server that is acting as a tunnel.
+
+
+
+[.* can .*][.* may .*]
+Even if a resource is cacheable, there may be additional constraints on whether a cache can use the cached copy for a particular request.
+
+
+
+[.* should .*]
+The time at which the origin server intends that an entity should no longer be returned by a cache without further validation.
+
+
+
+[.* neither .* nor .*]
+A cache behaves in a "semantically transparent" manner, with respect to a particular response, when its use affects neither the requesting client nor the origin server, except to improve performance.
+
+
+
+[.* would .*]
+When a cache is semantically transparent, the client receives exactly the same response (except for hop-by-hop headers) that it would have received had its request been handled directly by the origin server.
+
+
+
+[.* may .*]
+In the simplest case, this may be accomplished via a single connection (v) between the user agent (UA) and the origin server (O).
+
+
+
+[.* may .*]
+This distinction is important because some HTTP communication options may apply only to the connection with the nearest, non-tunnel neighbor, only to the end-points of the chain, or to all connections along the chain.
+
+
+
+[.* may .*]
+Although the diagram is linear, each participant may be engaged in multiple, simultaneous communications.
+
+
+
+[.* may .*]
+For example, B may be receiving requests from many clients other than A, and/or forwarding requests to servers other than C, at the same time that it is handling A's request.
+
+
+
+[.* may .*]
+Any party to the communication which is not acting as a tunnel may employ an internal cache for handling requests.
+
+
+
+[.* has .* to .*]
+The effect of a cache is that the request/response chain is shortened if one of the participants along the chain has a cached response applicable to that request.
+
+
+
+[.* may .*]
+Not all responses are usefully cacheable, and some requests may contain modifiers which place special requirements on cache behavior.
+
+
+
+[.* can .*]
+The default port is TCP 80 [19], but other ports can be used.
+
+
+
+[.* can .*]
+HTTP only presumes a reliable transport; any protocol that provides such guarantees can be used; the mapping of the HTTP/1.1 request and response structures onto the transport data units of the protocol in question is outside the scope of this specification.
+
+
+
+[.* may .*]
+In HTTP/1.1, a connection may be used for one or more request/response exchanges, although connections may be closed for a variety of reasons (see section 8.1).
+
+
+
+[.* need .* to .*]
+Implementors will need to be familiar with the notation in order to understand this specification.
+
+
+
+[.* can .*]
+Except where noted otherwise, linear white space (LWS) can be included between any two adjacent words (token or quoted-string), and between adjacent words and separators, without changing the interpretation of a field.
+
+
+
+[.* would .*]
+separators) MUST exist between any two tokens (for the definition of "token" below), since they would otherwise be interpreted as a single token.
+
+
+
+[.* can .*]
+HTTP/1.1 header field values can be folded onto multiple lines if the continuation line begins with a space or horizontal tab.
+
+
+
+[.* can .*]
+Comments can be included in some HTTP header fields by surrounding the comment text with parentheses.
+
+
+
+[.* may .*]
+The <minor> number is incremented when the changes made to the protocol add features which do not change the general message parsing algorithm, but which may add to the message semantics and imply additional capabilities of the sender.
+
+
+
+[.* either .* or .*]
+If a higher version request is received, the proxy/gateway MUST either downgrade the request version, or respond with an error, or switch to tunnel behavior.
+
+
+
+[.* may .*]
+Note: Converting between versions of HTTP may involve modification of header fields required or forbidden by the versions involved.
+
+
+
+[.* can .*]
+URIs in HTTP can be represented in absolute form or relative to some known base URI [11], depending upon the context of their use.
+
+
+
+[.* could .*]
+Servers MUST be able to handle the URI of any resource they serve, and SHOULD be able to handle URIs of unbounded length if they provide GET-based forms that could generate such URIs.
+
+
+
+[.* can .*]
+A server SHOULD return 414 (Request-URI Too Long) status if a URI is longer than the server can handle (see section 10.4.15).
+
+
+
+[.* might .*]
+Note: Servers ought to be cautious about depending on URI lengths above 255 bytes, because some older client or proxy implementations might not properly support these lengths.
+
+
+
+[.* may .*][.* have .* to .*]
+Note: Recipients of date values are encouraged to be robust in accepting date values that may have been sent by non-HTTP applications, as is sometimes the case when retrieving or posting messages via proxies/gateways to SMTP or NNTP.
+
+
+
+[.* may .*]
+Note that unconditional conversion in the other direction is not required, in that not all characters may be available in a given character set and a character set may provide more than one sequence of octets to represent a particular character.
+
+
+
+[.* should .*]
+Implementors should be aware of IETF character set requirements [38] [41].
+
+
+
+[.* should .*][.* has .* to .*]
+Some HTTP/1.0 software has interpreted a Content-Type header without charset parameter incorrectly to mean "recipient should guess."
+
+
+
+[.* have .* to .*]
+HTTP/1.1 recipients MUST respect the charset label provided by the sender; and those user agents that have a provision to "guess" a charset MUST use the charset from the content-type field if they support that charset, rather than the recipient's preference, when initially displaying a document.
+
+
+
+[.* can .*][.* has .* to .*]
+Content coding values indicate an encoding transformation that has been or can be applied to an entity.
+
+
+
+[.* can .*][.* may .*][.* has .* to .*][.* need .* to .*]
+Transfer-coding values are used to indicate an encoding transformation that has been, can be, or may need to be applied to an entity-body in order to ensure "safe transport" through the network.
+
+
+
+[.* can .*]
+The Trailer header field can be used to indicate which header fields are included in a trailer (see section 14.40).
+
+
+
+[.* could .*]
+fields consist entirely of optional metadata, and the recipient could use the message (in a manner acceptable to the origin server) without receiving this metadata.
+
+
+
+[.* might .*]
+In other words, the origin server is willing to accept the possibility that the trailer fields might be silently discarded along the path to the client.
+
+
+
+[.* would .*]
+It avoids a situation where compliance with the protocol would have necessitated a possibly infinite buffer on the proxy.
+
+
+
+[.* might .*]
+Parameter values might or might not be case-sensitive, depending on the semantics of the parameter name.
+
+
+
+[.* might .*]
+The presence or absence of a parameter might be significant to the processing of a media-type, depending on its definition within the media type registry.
+
+
+
+[.* would .*]
+In all other cases, an HTTP user agent SHOULD follow the same or similar behavior as a MIME user agent would upon receipt of a multipart type.
+
+
+
+[.* have .* to .*]
+The MIME header fields within each body-part of a multipart message- body do not have any significance to HTTP beyond that defined by their MIME semantics.
+
+
+
+[.* would .*]
+In general, an HTTP user agent SHOULD follow the same or similar behavior as a MIME user agent would upon receipt of a multipart type.
+
+
+
+[.* could .*]
+(The last three tags above are not registered tags; all but the last are examples of tags which could be registered in future.)
+
+
+
+[.* could .*]
+A "weak entity tag," indicated by the "W/" prefix, MAY be shared by two entities of a resource only if the entities are equivalent and could be substituted for each other with no significant change in semantics.
+
+
+
+[.* can .*]
+A weak entity tag can only be used for weak comparison.
+
+
+
+[.* can .*]
+An entity can be broken down into subranges according to various structural units.
+
+
+
+[.* has .* to .*]
+HTTP/1.1 has been designed to allow implementations of applications that do not depend on knowledge of ranges.
+
+
+
+[.* should .*]
+In other words, if the server is reading the protocol stream at the beginning of a message and receives a CRLF first, it should ignore the CRLF.
+
+
+
+[.* can .*]
+Header fields can be extended over multiple lines by preceding each extra line with at least one SP or HT.
+
+
+
+[.* might .*][.* ought .* to .*]
+Applications ought to follow "common form", where one is known or indicated, when generating HTTP constructs, since there might exist some implementations that fail to accept anything beyond the common forms.
+
+
+
+[.* either .* or .*]
+and consisting of either *TEXT or combinations of token, separators, and quoted-string>
+
+
+
+[.* may .*]
+(However, section 3.6 places restrictions on when certain transfer-codings may be used.)
+
+
+
+[.* might .*]
+All responses to the HEAD request method MUST NOT include a message-body, even though the presence of entity- header fields might lead one to believe they do.
+
+
+
+[.* can .*]
+This media type UST NOT be used unless the sender knows that the recipient can arse it; the presence in a request of a Range header with ultiple byte- range specifiers from a 1.1 client implies that the lient can parse multipart/byteranges responses.
+
+
+
+[.* might .*]
+A range header might be forwarded by a 1.0 proxy that does not understand multipart/byteranges; in this case the server MUST delimit the message using methods defined in items 1,3 or 5 of this section.
+
+
+
+[.* would .*]
+cannot be used to indicate the end of a request body, since that would leave no possibility for the server to send back a response.)
+
+
+
+[.* have .* to .*]
+There are a few header fields which have general applicability for both request and response messages, but which do not apply to the entity being transferred.
+
+
+
+[.* can .*]
+General-header field names can be extended reliably only in combination with a change in the protocol version.
+
+
+
+[.* may .*]
+However, new or experimental header fields may be given the semantics of general header fields if all parties in the communication recognize them to be general-header fields.
+
+
+
+[.* can .*]
+The list of methods allowed by a resource can be specified in an Allow header field (section 14.7).
+
+
+
+[.* can .*]
+The return code of the response always notifies the client whether a method is currently allowed on a resource, since the set of allowed methods can change dynamically.
+
+
+
+[.* would .*]
+One example would be
+
+
+
+[.* would .*]
+An example Request-Line would be:
+
+
+
+[.* would .*]
+For example, a client wishing to retrieve the resource above directly from the origin server would create a TCP connection to port 80 of the host "www.w3.org" and send the lines:
+
+
+
+[.* should .*][.* have .* to .*]
+Implementors should be aware that some pre-HTTP/1.1 proxies have been known to rewrite the Request-URI.
+
+
+
+[.* can .*]
+Request-header field names can be extended reliably only in combination with a change in the protocol version.
+
+
+
+[.* can .*]
+For example, if an unrecognized status code of 431 is received by the client, it can safely assume that there was something wrong with its request and treat the response as if it had received a 400 status code.
+
+
+
+[.* can .*]
+Response-header field names can be extended reliably only in combination with a change in the protocol version.
+
+
+
+[.* either .* or .*]
+In this section, both sender and recipient refer to either the client or the server, depending on who sends and who receives the entity.
+
+
+
+[.* might .*]
+Some of this metainformation is OPTIONAL; some might be REQUIRED by portions of this specification.
+
+
+
+[.* might .*][.* have .* to .*]
+The entity-body is obtained from the message-body by decoding any Transfer-Encoding that might have been applied to ensure safe and proper transfer of the message.
+
+
+
+[.* may .*]
+Content-Encoding may be used to indicate any additional content codings applied to the data, usually for the purpose of data compression, that are a property of the requested resource.
+
+
+
+[.* can .*]
+in routers and hosts (clients, servers, proxies, gateways, tunnels, or caches), and memory used for TCP protocol control blocks can be saved in hosts.
+
+
+
+[.* can .*]
+- HTTP requests and responses can be pipelined on a connection.
+
+
+
+[.* can .*]
+- HTTP can evolve more gracefully, since errors can be reported
+
+
+
+[.* might .*]
+Clients using future versions of HTTP might optimistically try a new feature, but if communicating with an older server, retry with old semantics after an error is reported.
+
+
+
+[.* can .*]
+Persistent connections provide a mechanism by which a client and a server can signal the close of a TCP connection.
+
+
+
+[.* would .*]
+An HTTP/1.1 client MAY expect a connection to remain open, but would decide to keep it open based on whether the response from a server contains a Connection header with the connection-token close.
+
+
+
+[.* either .* or .*]
+If either the client or the server sends the close token in the Connection header, that request becomes the last one for the connection.
+
+
+
+[.* could .*]
+Otherwise, a premature termination of the transport connection could lead to indeterminate results.
+
+
+
+[.* might .*]
+Proxy servers might make this a higher value since it is likely that the client will be making more connections through the same server.
+
+
+
+[.* either .* or .*]
+The use of persistent connections places no requirements on the length (or existence) of this time-out for either the client or the server.
+
+
+
+[.* could .*]
+If a client or server does not detect the other side's close promptly it could cause unnecessary resource drain on the network.
+
+
+
+[.* might .*][.* have .* to .*][.* has .* to .*]
+For example, a client might have started to send a new request at the same time that the server has decided to close the "idle" connection.
+
+
+
+[.* can .*]
+The latter technique can exacerbate network congestion.
+
+
+
+[.* might .*][.* either .* or .*]
+In some cases, it might either be inappropriate or highly inefficient for the client to send the body if the server will reject the message without looking at the body.
+
+
+
+[.* may .*][.* either .* or .*]
+Because of the presence of older implementations, the protocol allows ambiguous situations in which a client may send "Expect: 100- continue" without receiving either a 417 (Expectation Failed) status or a 100 (Continue) status.
+
+
+
+[.* either .* or .*]
+field with the "100-continue" expectation, an origin server MUST either respond with 100 (Continue) status and continue to read from the input stream, or respond with a final status code.
+
+
+
+[.* might .*]
+Otherwise, the client might not reliably receive the response message.
+
+
+
+[.* either .* or .*]
+header field with the "100-continue" expectation, and the proxy either knows that the next-hop server complies with HTTP/1.1 or higher, or does not know the HTTP version of the next-hop server, it MUST forward the request, including the Expect header field.
+
+
+
+[.* either .* or .*]
+Wait either for an error response from the server, or for T
+
+
+
+[.* can .*]
+Although this set can be expanded, additional methods cannot be assumed to share the same semantics for separately extended clients and servers.
+
+
+
+[.* should .*][.* may .*][.* might .*][.* have .* to .*]
+Implementors should be aware that the software represents the user in their interactions over the Internet, and should be careful to allow the user to be aware of any actions they might take which may have an unexpected significance to themselves or others.
+
+
+
+[.* can .*]
+Methods can also have the property of "idempotence" in that (aside from error or expiration issues) the side-effects of N > 0 identical requests is the same as for a single request.
+
+
+
+[.* might .*]
+Although this specification does not define any use for such a body, future extensions to HTTP might use the OPTIONS body to make more detailed queries on the server.
+
+
+
+[.* can .*]
+For example, this can be used to test a proxy for HTTP/1.1 compliance (or lack thereof).
+
+
+
+[.* might .*]
+The format for such a body is not defined by this specification, but might be defined by future extensions to HTTP.
+
+
+
+[.* shall .*]
+If the Request-URI refers to a data-producing process, it is the produced data which shall be returned as the entity in the response and not the source text of the process, unless that text happens to be the output of the process.
+
+
+
+[.* can .*]
+This method can be used for obtaining metainformation about the entity implied by the request without transferring the entity-body itself.
+
+
+
+[.* would .*]
+If the new field values indicate that the cached entity differs from the current entity (as would be indicated by a change in Content-Length, Content-MD5, ETag or Last-Modified), then the cache MUST treat the cache entry as stale.
+
+
+
+[.* can .*][.* might .*]
+The action performed by the POST method might not result in a resource that can be identified by a URI.
+
+
+
+[.* either .* or .*]
+In this case, either 200 (OK) or 204 (No Content) is the appropriate response status, depending on whether or not the response includes an entity that describes the result.
+
+
+
+[.* has .* to .*]
+If a resource has been created on the origin server, the response SHOULD be 201 (Created) and contain an entity which describes the status of the request and refers to the new resource, and a Location header (see section 14.30).
+
+
+
+[.* can .*]
+However, the 303 (See Other) response can be used to direct the user agent to retrieve a cacheable resource.
+
+
+
+[.* can .*]
+If the Request-URI does not point to an existing resource, and that URI is capable of being defined as a new resource by the requesting user agent, the origin server can create the resource with that URI.
+
+
+
+[.* either .* or .*]
+If an existing resource is modified, either the 200 (OK) or 204 (No Content) response codes SHOULD be sent to indicate successful completion of the request.
+
+
+
+[.* could .*]
+If the resource could not be created or modified with the Request-URI, an appropriate error response SHOULD be given that reflects the nature of the problem.
+
+
+
+[.* might .*]
+That resource might be a data-accepting process, a gateway to some other protocol, or a separate entity that accepts annotations.
+
+
+
+[.* might .*]
+For example, an article might have a URI for identifying "the current version" which is separate from the URI identifying each particular version.
+
+
+
+[.* might .*]
+In this case, a PUT request on a general URI might result in several other URIs being defined by the origin server.
+
+
+
+[.* either .* or .*]
+The final recipient is either the origin server or the first proxy or gateway to receive a Max-Forwards value of zero (0) in the request (see section 14.31).
+
+
+
+[.* can .*]
+This specification reserves the method name CONNECT for use with a proxy that can dynamically switch to being a tunnel (e.g, SSL tunneling [44]).
+
+
+
+[.* can .*]
+Each Status-Code is described below, including a description of which method(s) it can follow and any metainformation required in the response.
+
+
+
+[.* might .*]
+For example, switching to a newer version of HTTP is advantageous over older versions, and switching to a real-time, synchronous protocol might be advantageous when delivering resources that use such features.
+
+
+
+[.* can .*]
+The newly created resource can be referenced by the URI(s) returned in the entity of the response, with the most specific URI for the resource given by a Location header field.
+
+
+
+[.* can .*]
+The response SHOULD include an entity containing a list of resource characteristics and location(s) from which the user or user agent can choose the one most appropriate.
+
+
+
+[.* might .*]
+The request might or might not eventually be acted upon, as it might be disallowed when processing actually takes place.
+
+
+
+[.* can .*][.* either .* or .*]
+The entity returned with this response SHOULD include an indication of the request's current status and either a pointer to a status monitor or some estimate of when the user can expect the request to be fulfilled.
+
+
+
+[.* might .*]
+For example, including local annotation information about the resource might result in a superset of the metainformation known by the origin server.
+
+
+
+[.* would .*]
+Use of this response code is not required and is only appropriate when the response would otherwise be 200 (OK).
+
+
+
+[.* might .*][.* has .* to .*][.* need .* to .*]
+The server has fulfilled the request but does not need to return an entity-body, and might want to return updated metainformation.
+
+
+
+[.* has .* to .*]
+The server has fulfilled the request and the user agent SHOULD reset the document view which caused the request to be sent.
+
+
+
+[.* can .*]
+This response is primarily intended to allow input for actions to take place via user input, followed by a clearing of the form in which the input is given so that the user can easily initiate another input action.
+
+
+
+[.* have .* to .*]
+The request MUST have included a Range header field (section 14.35) indicating the desired range, and MAY have included an If-Range header field (section 14.27) to make the request conditional.
+
+
+
+[.* would .*]
+- ETag and/or Content-Location, if the header would have been sent
+
+
+
+[.* would .*][.* have .* to .*]
+Otherwise, the response MUST include all of the entity-headers that would have been returned with a 200 (OK) response to the same request.
+
+
+
+[.* should .*][.* might .*]
+Content developers should be aware that there might be clients that implement such a fixed limitation.
+
+
+
+[.* can .*]
+The requested resource corresponds to any one of a set of representations, each with its own specific location, and agent- driven negotiation information (section 12) is being provided so that the user (or user agent) can select a preferred representation and redirect its request to that location.
+
+
+
+[.* can .*]
+Unless it was a HEAD request, the response SHOULD include an entity containing a list of resource characteristics and location(s) from which the user or user agent can choose the one most appropriate.
+
+
+
+[.* has .* to .*]
+The requested resource has been assigned a new permanent URI and any future references to this resource SHOULD use one of the returned URIs.
+
+
+
+[.* ought .* to .*]
+Clients with link editing capabilities ought to automatically re-link references to the Request-URI to one or more of the new references returned by the server, where possible.
+
+
+
+[.* can .*][.* might .*]
+If the 301 status code is received in response to a request other than GET or HEAD, the user agent MUST NOT automatically redirect the request unless it can be confirmed by the user, since this might change the conditions under which the request was issued.
+
+
+
+[.* might .*]
+Since the redirection might be altered on occasion, the client SHOULD continue to use the Request-URI for future requests.
+
+
+
+[.* can .*][.* might .*]
+If the 302 status code is received in response to a request other than GET or HEAD, the user agent MUST NOT automatically redirect the request unless it can be confirmed by the user, since this might change the conditions under which the request was issued.
+
+
+
+[.* have .* to .*]
+The status codes 303 and 307 have been added for servers that wish to make unambiguously clear which kind of reaction is expected of the client.
+
+
+
+[.* can .*]
+The response to the request can be found under a different URI and SHOULD be retrieved using a GET method on that resource.
+
+
+
+[.* might .*]
+The 303 response MUST NOT be cached, but the response to the second (redirected) request might be cacheable.
+
+
+
+[.* may .*]
+When interoperability with such clients is a concern, the 302 status code may be used instead, since most user agents react to a 302 response as described here for 303.
+
+
+
+[.* would .*]
+- ETag and/or Content-Location, if the header would have been sent
+
+
+
+[.* can .*][.* might .*]
+If the 307 status code is received in response to a request other than GET or HEAD, the user agent MUST NOT automatically redirect the request unless it can be confirmed by the user, since this might change the conditions under which the request was issued.
+
+
+
+[.* can .*][.* may .*]
+If the client continues sending data to the server after the close, the server's TCP stack will send a reset packet to the client, which may erase the client's unacknowledged input buffers before they can be read and interpreted by the HTTP application.
+
+
+
+[.* could .*]
+The request could not be understood by the server due to malformed syntax.
+
+
+
+[.* might .*]
+If the 401 response contains the same challenge as the prior response, and the user agent has already attempted authentication at least once, then the user SHOULD be presented the entity that was given in the response, since that entity might include relevant diagnostic information.
+
+
+
+[.* can .*]
+If the server does not wish to make this information available to the client, the status code 404 (Not Found) can be used instead.
+
+
+
+[.* have .* to .*]
+The resource identified by the request is only capable of generating response entities which have content characteristics not acceptable according to the accept headers sent in the request.
+
+
+
+[.* can .*]
+Unless it was a HEAD request, the response SHOULD include an entity containing a list of available entity characteristics and location(s) from which the user or user agent can choose the one most appropriate.
+
+
+
+[.* may .*]
+In some cases, this may even be preferable to sending a 406 response.
+
+
+
+[.* could .*]
+If the response could be unacceptable, a user agent SHOULD temporarily stop receipt of more data and query the user for a decision on further actions.
+
+
+
+[.* could .*]
+The request could not be completed due to a conflict with the current state of the resource.
+
+
+
+[.* might .*]
+This code is only allowed in situations where it is expected that the user might be able to resolve the conflict and resubmit the request.
+
+
+
+[.* would .*][.* might .*]
+Ideally, the response entity would include enough information for the user or user agent to fix the problem; however, that might not be possible and is not required.
+
+
+
+[.* might .*]
+For example, if versioning were being used and the entity being PUT included changes to a resource which conflict with those made by an earlier (third-party) request, the server might use the 409 response to indicate that it can't complete the request.
+
+
+
+[.* would .*]
+In this case, the response entity would likely contain a list of the differences between the two versions in a format defined by the response Content-Type.
+
+
+
+[.* has .* to .*]
+If the server does not know, or has no facility to determine, whether or not the condition is permanent, the status code 404 (Not Found) SHOULD be used instead.
+
+
+
+[.* has .* to .*]
+This rare condition is only likely to occur when a client has improperly converted a POST request to a GET request with long query information, when the client has descended into a URI "black hole" of redirection (e.g,, a redirected URI prefix that points to a suffix of itself), or when the server is under attack by a client attempting to exploit security holes present in some servers using fixed-length buffers for reading or manipulating the Request-URI.
+
+
+
+[.* could .*]
+The expectation given in an Expect request-header field (see section 14.20) could not be met by this server, or, if the server is a proxy, the server has unambiguous evidence that the request could not be met by the next-hop server.
+
+
+
+[.* would .*]
+If no Retry-After is given, the client SHOULD handle the response as it would for a 500 response.
+
+
+
+[.* may .*]
+Some servers may wish to simply refuse the connection.
+
+
+
+[.* can .*]
+HTTP provides several OPTIONAL challenge-response authentication mechanisms which can be used by a server to challenge a client request and by a client to provide authentication information.
+
+
+
+[.* may .*]
+Note: This is not called "format negotiation" because the alternate representations may be of the same media type, but use different capabilities of that type, be in different languages, etc.
+
+
+
+[.* may .*]
+These two kinds of negotiation are orthogonal and thus may be used separately or in combination.
+
+
+
+[.* can .*]
+Selection is based on the available representations of the response (the dimensions over which it can vary; e.g, language, content-coding, etc.)
+
+
+
+[.* would .*]
+might be "best" for any given user, since that would require complete knowledge of both the capabilities of the user agent and the intended use for the response (e.g,, does the user want to view it on screen or print it on paper?
+
+
+
+[.* can .*]
+request can be both very inefficient (given that only a small percentage of responses have multiple representations) and a potential violation of the user's privacy.
+
+
+
+[.* may .*]
+It may limit a public cache's ability to use the same response
+
+
+
+[.* can .*]
+The Vary  header field can be used to express the parameters the server uses to select a representation that is subject to server- driven negotiation.
+
+
+
+[.* may .*]
+Selection from among the representations may be performed automatically (if the user agent is capable of doing so) or manually by the user selecting from a generated (possibly hypertext) menu.
+
+
+
+[.* would .*]
+Agent-driven negotiation is advantageous when the response would vary over commonly-used dimensions (such as type, language, or encoding), when the origin server is unable to determine a user agent's capabilities from examining the request, and generally when public caches are used to distribute server load and reduce network usage.
+
+
+
+[.* would .*][.* has .* to .*]
+Transparent negotiation has the advantage of distributing the negotiation work that would otherwise be required of the origin server and also removing the second request delay of agent-driven negotiation when the cache is able to correctly guess the right response.
+
+
+
+[.* could .*]
+This specification does not define any mechanism for transparent negotiation, though it also does not prevent any such mechanism from being developed as an extension that could be used within HTTP/1.1.
+
+
+
+[.* can .*]
+HTTP is typically used for distributed information systems, where performance can be improved by the use of response caches.
+
+
+
+[.* would .*]
+Caching would be useless if it did not significantly improve performance.
+
+
+
+[.* need .* to .*]
+The goal of caching in HTTP/1.1 is to eliminate the need to send requests in many cases, and to eliminate the need to send full responses in many other cases.
+
+
+
+[.* may .*][.* might .*]
+However, because non-transparent operation may confuse non-expert users, and might be incompatible with certain server applications (such as those for ordering merchandise), the protocol requires that transparency be relaxed
+
+
+
+[.* might .*]
+Note: The server, cache, or client implementor might be faced with design decisions not explicitly discussed in this specification.
+
+
+
+[.* might .*]
+If a decision might affect semantic transparency, the implementor ought to err on the side of maintaining transparency unless a careful and complete analysis shows significant benefits in breaking transparency.
+
+
+
+[.* can .*]
+If the cache can not communicate with the origin server, then a correct cache SHOULD respond as above if the response can be correctly served from the cache; if not it MUST return an error or warning indicating that there was a communication failure.
+
+
+
+[.* would .*]
+If a cache receives a response (either an entire response, or a 304 (Not Modified) response) that it would normally forward to the requesting client, and the received response is no longer fresh, the cache SHOULD forward it to the requesting client without adding a new Warning (but without removing any existing Warning headers).
+
+
+
+[.* might .*]
+A cache SHOULD NOT attempt to revalidate a response simply because that response became stale in transit; this might lead to an infinite loop.
+
+
+
+[.* neither .* nor .*]
+Whenever a cache returns a response that is neither first-hand nor "fresh enough" (in the sense of condition 2 in section 13.1.1), it MUST attach a warning to that effect, using a Warning general-header.
+
+
+
+[.* might .*]
+For example, a server might provide the same warning with texts in both English and Basque.
+
+
+
+[.* might .*]
+When multiple warnings are attached to a response, it might not be practical or reasonable to display all of them to the user.
+
+
+
+[.* might .*][.* need .* to .*]
+In some cases, a server or client might need to provide explicit directives to the HTTP caches.
+
+
+
+[.* either .* or .*]
+The Cache-Control header allows a client or server to transmit a variety of directives in either requests or responses.
+
+
+
+[.* might .*]
+For example, the user agent might allow the user to specify that cached entities (even explicitly stale ones) are never validated.
+
+
+
+[.* might .*]
+Or the user agent might habitually add "Cache- Control: max-stale=3600" to every request.
+
+
+
+[.* either .* or .*]
+The user agent SHOULD NOT default to either non-transparent behavior, or behavior that results in abnormally ineffective caching, but MAY be explicitly configured to do so by an explicit action of the user.
+
+
+
+[.* might .*][.* has .* to .*]
+If the user has overridden the basic caching mechanisms, the user agent SHOULD explicitly indicate to the user whenever this results in the display of information that might not meet the server's transparency requirements (in particular, if the displayed entity is known to be stale).
+
+
+
+[.* could .*]
+The indication need not be a dialog box; it could be an icon (for example, a picture of a rotting fish) or some other indicator.
+
+
+
+[.* would .*][.* has .* to .*]
+If the user has overridden the caching mechanisms in a way that would abnormally reduce the effectiveness of caches, the user agent SHOULD continually indicate this state to the user (for example, by a display of a picture of currency in flames) so that the user does not inadvertently consume excess resources or suffer from excessive latency.
+
+
+
+[.* may .*][.* ought .* to .*]
+This decision ought not be made lightly, but may be necessary for reasons of availability or performance, especially when the cache is poorly connected to the origin server.
+
+
+
+[.* might .*]
+Whenever a cache returns a stale response, it MUST mark it as such (using a Warning header) enabling the client software to alert the user that there might be a potential problem.
+
+
+
+[.* might .*][.* need .* to .*]
+While the origin server (and to a lesser extent, intermediate caches, by their contribution to the age of a response) are the primary source of expiration information, in some cases the client might need to control a cache's decision about whether to return a cached response without validating it.
+
+
+
+[.* might .*]
+This loosens the constraints on the caches, and so might violate the origin server's specified constraints on semantic transparency, but might be necessary to support disconnected operation, or high availability in the face of poor connectivity.
+
+
+
+[.* can .*]
+HTTP caching works best when caches can entirely avoid making requests to the origin server.
+
+
+
+[.* can .*]
+In other words, a cache can return a fresh response without first contacting the server.
+
+
+
+[.* either .* or .*]
+Servers specify explicit expiration times using either the Expires header, or the max-age directive of the Cache-Control header.
+
+
+
+[.* might .*][.* ought .* to .*]
+Since heuristic expiration times might compromise semantic transparency, they ought to used cautiously, and we encourage origin servers to provide explicit expiration times as much as possible.
+
+
+
+[.* can .*]
+A response's age can be calculated in two entirely independent ways:
+
+
+
+[.* can .*][.* have .* to .*]
+Given that we have two independent ways to compute the age of a response when it is received, we can combine these as
+
+
+
+[.* either .* or .*]
+and as long as we have either nearly synchronized clocks or all- HTTP/1.1 paths, one gets a reliable (conservative) result.
+
+
+
+[.* might .*]
+Because of network-imposed delays, some significant interval might pass between the time that a server generates a response and the time it is received at the next outbound cache or client.
+
+
+
+[.* could .*]
+If uncorrected, this delay could result in improperly low ages.
+
+
+
+[.* can .*][.* have .* to .*]
+Because the request that resulted in the returned Age value must have been initiated prior to that Age value's generation, we can correct for delays imposed by the network by recording the time at which the request was initiated.
+
+
+
+[.* need .* to .*]
+In order to decide whether a response is fresh or stale, we need to compare its freshness lifetime to its age.
+
+
+
+[.* can .*]
+In the discussion below, the values can be represented in any form appropriate for arithmetic operations.
+
+
+
+[.* might .*]
+A typical setting of this fraction might be 10%.
+
+
+
+[.* might .*]
+This situation might arise because the cache is pooling responses from other caches, or because a client has asked for a reload or a revalidation of an apparently fresh cache entry.
+
+
+
+[.* might .*]
+Because a client might be receiving responses via multiple paths, so that some responses flow through one set of caches and other responses flow through a different set of caches, a client might receive responses in an order different from that in which the origin server sent them.
+
+
+
+[.* would .*]
+We would like the client to use the most recently generated response, even if older responses are still apparently fresh.
+
+
+
+[.* can .*]
+Neither the entity tag nor the expiration value can impose an ordering on responses, since it is possible that a later response intentionally carries an earlier expiration time.
+
+
+
+[.* would .*][.* has .* to .*]
+When a cache has a stale entry that it would like to use as a response to a client's request, it first has to check with the origin server (or possibly an intermediate cache with a fresh response) to see if its cached entry is still usable.
+
+
+
+[.* have .* to .*]
+Since we do not want to have to pay the overhead of retransmitting the full response if the cached entry is good, and we do not want to pay the overhead of an extra round trip if the cached entry is invalid, the HTTP/1.1 protocol supports the use of conditional methods.
+
+
+
+[.* either .* or .*]
+That is, it is possible to request either that a method be performed if and only if a validator matches or if and only if no validators match.
+
+
+
+[.* may .*]
+Note: a response that lacks a validator may still be cached, and served from cache until it expires, unless this is explicitly prohibited by a cache-control directive.
+
+
+
+[.* might .*]
+This might allow more reliable validation in situations where it is inconvenient to store modification dates, where the one-second resolution of HTTP date values is not sufficient, or where the origin server wishes to avoid certain paradoxes that might arise from the use of modification dates.
+
+
+
+[.* would .*]
+Since both origin servers and caches will compare two validators to decide if they represent the same or different entities, one normally would expect that if the entity (the entity-body or any entity- headers) changes in any way, then the associated validator would change as well.
+
+
+
+[.* might .*]
+However, there might be cases when a server prefers to change the validator only on semantically significant changes, and not when insignificant aspects of the entity change.
+
+
+
+[.* can .*]
+One can think of a strong validator as one that changes whenever the bits of an entity changes, while a weak value changes whenever the meaning of an entity changes.
+
+
+
+[.* can .*]
+Alternatively, one can think of a strong validator as part of an identifier for a specific entity, while a weak validator is part of an identifier for a set of semantically equivalent entities.
+
+
+
+[.* could .*][.* might .*]
+An entity's modification time, if represented with one-second resolution, could be a weak validator, since it is possible that the resource might be modified twice during a single second.
+
+
+
+[.* either .* or .*]
+A "use" of a validator is either when a client generates a request and includes the validator in a validating header field, or when a server compares two validators.
+
+
+
+[.* might .*]
+However, only a strong validator is usable for a sub-range retrieval, since otherwise the client might end up with an internally inconsistent entity.
+
+
+
+[.* either .* or .*]
+Clients MAY issue simple (non-subrange) GET requests with either weak validators or strong validators.
+
+
+
+[.* would .*][.* have .* to .*][.* had .* to .*]
+This method relies on the fact that if two different responses were sent by the origin server during the same second, but both had the same Last-Modified time, then at least one of those responses would have a Date value equal to its Last-Modified time.
+
+
+
+[.* could .*][.* would .*]
+unless the risk of a breakdown in semantic transparency that could result from using this date in an If-Modified-Since header would lead to serious problems.
+
+
+
+[.* might .*]
+Cache entries might persist for arbitrarily long periods, regardless of expiration times, so it might be inappropriate to expect that a cache will never again attempt to validate an entry using a validator that it obtained at some point in the past.
+
+
+
+[.* should .*]
+Note: The general principle behind these rules is that HTTP/1.1 servers and clients should transmit as much non-redundant information as is available in their responses and requests.
+
+
+
+[.* should .*]
+Generally, last-modified values received or used by these systems will support transparent and efficient caching, and so HTTP/1.1 origin servers should provide Last-Modified values.
+
+
+
+[.* could .*][.* should .*]
+In those rare cases where the use of a Last-Modified value as a validator by an HTTP/1.0 system could result in a serious problem, then HTTP/1.1 origin servers should not provide one.
+
+
+
+[.* can .*][.* would .*]
+The principle behind entity tags is that only the service author knows the semantics of a resource well enough to select an appropriate cache validation mechanism, and the specification of any validator comparison function more complex than byte-equality would open up a can of worms.
+
+
+
+[.* neither .* nor .*]
+If there is neither a cache validator nor an explicit expiration time associated with a response, we do not expect it to be cached, but certain caches MAY violate this expectation (for example, when little or no network connectivity is available).
+
+
+
+[.* can .*]
+A client can usually detect that such a response was taken from a cache by comparing the Date header to the current time.
+
+
+
+[.* might .*]
+However, in some cases it might be inappropriate for a cache to retain an entity, or to return it in response to a subsequent request.
+
+
+
+[.* might .*]
+This might be because absolute semantic transparency is deemed necessary by the service author, or because of security or privacy considerations.
+
+
+
+[.* can .*]
+Certain cache-control directives are therefore provided so that the server can indicate that certain resource entities, or portions thereof, are not to be cached regardless of other considerations.
+
+
+
+[.* might .*]
+However, if the cache holds a cache entry based on a previous response, it might have to combine parts of a new response with what is held in the cache entry.
+
+
+
+[.* might .*]
+Warning: unnecessary modification of end-to-end headers might cause authentication failures if stronger authentication mechanisms are introduced in later versions of HTTP.
+
+
+
+[.* might .*]
+Note: this rule allows an origin server to use a 304 (Not Modified) or a 206 (Partial Content) response to update any header associated with a previous response for the same entity or sub- ranges thereof, although it might not always be meaningful or correct to do so.
+
+
+
+[.* might .*][.* either .* or .*]
+A response might transfer only a subrange of the bytes of an entity- body, either because the request included one or more Range specifications, or because a connection was broken prematurely.
+
+
+
+[.* might .*]
+After several such transfers, a cache might have received several ranges of the same entity-body.
+
+
+
+[.* either .* or .*]
+If either requirement is not met, the cache MUST use only the most recent partial response (based on the Date values transmitted with every response, and using the incoming response if these values are equal or missing), and MUST discard the other partial information.
+
+
+
+[.* can .*]
+Use of server-driven content negotiation (section 12.1), as indicated by the presence of a Vary header field in a response, alters the conditions and procedure by which a cache can use the response for subsequent requests.
+
+
+
+[.* can .*]
+The selecting request-headers from two requests are defined to match if and only if the selecting request-headers in the first request can be transformed to the selecting request-headers in the second request by adding or removing linear white space (LWS) at places where this is allowed by the corresponding BNF, and/or combining multiple message-header fields with the same field name following the rules about message headers in section 4.2.
+
+
+
+[.* can .*]
+A Vary header field-value of "*" always fails to match and subsequent requests on that resource can only be properly interpreted by the origin server.
+
+
+
+[.* can .*]
+This conveys to the server the set of entities currently held by the cache, so that if any one of these entities matches the requested entity, the server can use the ETag header field in its 304 (Not Modified) response to tell the cache which entry is appropriate.
+
+
+
+[.* would .*]
+If any of the existing cache entries contains only partial content for the associated entity, its entity-tag SHOULD NOT be included in the If-None-Match header field unless the request is for a range that would be fully satisfied by that entry.
+
+
+
+[.* might .*]
+Partial responses MAY be combined as described in section 13.5.4; the result might be a full response or might still be partial.
+
+
+
+[.* either .* or .*]
+If a cache receives a 5xx response while attempting to revalidate an entry, it MAY either forward this response to the requesting client, or act as if the server failed to respond.
+
+
+
+[.* would .*][.* have .* to .*]
+Unless the origin server explicitly prohibits the caching of their responses, the application of GET and HEAD methods to any resources SHOULD NOT have side effects that would lead to erroneous behavior if these responses are taken from a cache.
+
+
+
+[.* have .* to .*]
+They MAY still have side effects, but a cache is not required to consider such side effects in its caching decisions.
+
+
+
+[.* might .*]
+The effect of certain methods performed on a resource at the origin server might cause one or more existing cache entries to become non- transparently invalid.
+
+
+
+[.* would .*][.* might .*]
+That is, although they might continue to be "fresh," they do not accurately reflect what the origin server would return for a new request on that resource.
+
+
+
+[.* might .*]
+For example, the request that caused the change at the origin server might not have gone through the proxy where a cache entry is stored.
+
+
+
+[.* can .*][.* either .* or .*][.* need .* to .*]
+In this section, the phrase "invalidate an entity" means that the cache will either remove all instances of that entity from its storage, or will mark these as "invalid" and in need of a mandatory revalidation before they can be returned in response to a subsequent request.
+
+
+
+[.* either .* or .*]
+This is either the entity referred to by the Request-URI, or by the Location or Content-Location headers (if present).
+
+
+
+[.* might .*]
+All methods that might be expected to cause modifications to the origin server's resources MUST be written through to the origin server.
+
+
+
+[.* having .* to .*]
+A cache MUST NOT reply to such a request from a client before having transmitted the request to the inbound server, and having received a corresponding response from the inbound server.
+
+
+
+[.* would .*][.* have .* to .*]
+It MAY insert it into cache storage and MAY, if it meets all other requirements, use it to respond to any future requests that would previously have caused the old response to be returned.
+
+
+
+[.* can .*][.* have .* to .*]
+User agents often have history mechanisms, such as "Back" buttons and history lists, which can be used to redisplay an entity retrieved earlier in a session.
+
+
+
+[.* has .* to .*]
+If the entity is still in storage, a history mechanism SHOULD display it even if the entity has expired, unless the user has specifically configured the agent to refresh expired history documents.
+
+
+
+[.* might .*]
+This is not to be construed to prohibit the history mechanism from telling the user that a view might be stale.
+
+
+
+[.* would .*]
+Note: if history list mechanisms unnecessarily prevent users from viewing stale resources, this will tend to force service authors to avoid using HTTP expiration controls and cache controls when they would otherwise like to.
+
+
+
+[.* may .*]
+Service authors may consider it important that users not be presented with error messages or warning messages when they use navigation controls (such as BACK) to view previously fetched resources.
+
+
+
+[.* may .*][.* ought .* to .*]
+Even though sometimes such resources ought not to cached, or ought to expire quickly, user interface considerations may force service authors to resort to other means of preventing caching (e.g, "once-only" URLs) in order not to suffer the effects of improperly functioning history mechanisms.
+
+
+
+[.* either .* or .*]
+For entity-header fields, both sender and recipient refer to either the client or the server, depending on who sends and who receives the entity.
+
+
+
+[.* can .*]
+The Accept request-header field can be used to specify certain media types which are acceptable for the response.
+
+
+
+[.* can .*]
+Accept headers can be used to indicate that the request is specifically limited to a small set of desired types, as in the case of a request for an in-line image.
+
+
+
+[.* would .*]
+Verbally, this would be interpreted as "text/html and text/x-c are the preferred media types, but if they do not exist, then send the text/x-dvi entity, and if that does not exist, send the text/plain entity."
+
+
+
+[.* can .*]
+Media ranges can be overridden by more specific media ranges or specific media types.
+
+
+
+[.* might .*]
+Note: A user agent might be provided with a default set of quality values for certain media ranges.
+
+
+
+[.* can .*]
+The Accept-Charset request-header field can be used to indicate what character sets are acceptable for the response.
+
+
+
+[.* has .* to .*]
+In this case, if "identity" is one of the available content-codings, then the server SHOULD use the "identity" content-coding, unless it has additional information that a different content-coding is meaningful to the client.
+
+
+
+[.* might .*]
+The server might also make this decision based on information about the particular user-agent or client.
+
+
+
+[.* might .*]
+It might be contrary to the privacy expectations of the user to send an Accept-Language header with the complete linguistic preferences of the user in every request.
+
+
+
+[.* should .*]
+Note: When making the choice of linguistic preference available to the user, we remind implementors of  the fact that users are not familiar with the details of language matching as described above, and should provide appropriate guidance.
+
+
+
+[.* might .*]
+As an example, users might assume that on selecting "en-gb", they will be served any kind of English document if British English is not available.
+
+
+
+[.* might .*]
+A user agent might suggest in such a case to add "en" to get the best matching behavior.
+
+
+
+[.* can .*]
+If a cache receives a value larger than the largest positive integer it can represent, or if any of its age calculations overflows, it MUST transmit an Age header with a value of 2147483648 (2^31).
+
+
+
+[.* might .*]
+A proxy MUST NOT modify the Allow header field even if it does not understand all the methods specified, since the user agent might have other means of communicating with the origin server.
+
+
+
+[.* has .* to .*]
+But (if the specified maximum age has passed) a proxy cache MUST first revalidate it with the origin server, using the request-headers from the new request to allow the origin server to authenticate the new request.
+
+
+
+[.* might .*]
+Note that HTTP/1.0 caches might not implement Cache-Control and might only implement Pragma: no-cache (see section 14.32).
+
+
+
+[.* might .*]
+Cache directives MUST be passed through by a proxy or gateway application, regardless of their significance to that application, since the directives might be applicable to all recipients along the request/response chain.
+
+
+
+[.* might .*]
+This mechanism supports extensibility; implementations of future versions of the HTTP protocol might apply these directives to header fields not defined in HTTP/1.1.
+
+
+
+[.* can .*]
+The cache-control directives can be broken down into these general categories:
+
+
+
+[.* may .*]
+- Restrictions on what are cacheable; these may only be imposed by
+
+
+
+[.* may .*]
+- Restrictions on what may be stored by a cache; these may be
+
+
+
+[.* either .* or .*]
+imposed by either the origin server or the user agent.
+
+
+
+[.* may .*]
+- Modifications of the basic expiration mechanism; these may be
+
+
+
+[.* either .* or .*]
+imposed by either the origin server or the user agent.
+
+
+
+[.* may .*]
+- Controls over cache revalidation and reload; these may only be
+
+
+
+[.* would .*]
+Indicates that the response MAY be cached by any cache, even if it would normally be non-cacheable or cacheable only within a non- shared cache.
+
+
+
+[.* may .*]
+Note: This usage of the word private only controls where the response may be cached, and cannot ensure the privacy of the message content.
+
+
+
+[.* have .* to .*]
+This allows an origin server to prevent caching even by caches that have been configured to return stale responses to client requests.
+
+
+
+[.* either .* or .*]
+The no-store directive applies to the entire message, and MAY be sent either in a response or in a request.
+
+
+
+[.* either .* or .*]
+If sent in a request, a cache MUST NOT store any part of either this request or any response to it.
+
+
+
+[.* either .* or .*]
+If sent in a response, a cache MUST NOT store any part of either this response or the request that elicited it.
+
+
+
+[.* might .*]
+Even when this directive is associated with a response, users might explicitly store such a response outside of the caching system (e.g,, with a "Save As" dialog).
+
+
+
+[.* might .*]
+While the use of this directive might improve privacy in some cases, we caution that it is NOT in any way a reliable or sufficient mechanism for ensuring privacy.
+
+
+
+[.* might .*]
+In particular, malicious or compromised caches might not recognize or obey this directive, and communications networks might be vulnerable to eavesdropping.
+
+
+
+[.* might .*]
+This might be useful if certain HTTP/1.0 caches improperly calculate ages or expiration times, perhaps due to desynchronized clocks.
+
+
+
+[.* might .*]
+Note: An origin server might wish to use a relatively new HTTP cache control feature, such as the "private" directive, on a network including older caches that do not understand that feature.
+
+
+
+[.* need .* to .*]
+The origin server will need to combine the new feature with an Expires field whose value is less than or equal to the Date value.
+
+
+
+[.* either .* or .*]
+If a response includes an s-maxage directive, then for a shared cache (but not for a private cache), the maximum age specified by this directive overrides the maximum age specified by either the max-age directive or the Expires header.
+
+
+
+[.* either .* or .*]
+If a cache returns a stale response, either because of a max-stale directive on a request, or because the cache is configured to override the expiration time of a response, the cache MUST attach a Warning header to the stale response, using Warning 110 (Response is stale).
+
+
+
+[.* might .*][.* need .* to .*]
+Sometimes a user agent might want or need to insist that a cache revalidate its cache entry with the origin server (and not just with the next cache along the path to the origin server), or to reload its cache entry from the origin server.
+
+
+
+[.* might .*][.* either .* or .*]
+End-to-end revalidation might be necessary if either the cache or the origin server has overestimated the expiration time of the cached response.
+
+
+
+[.* may .*]
+End-to-end reload may be necessary if the cache entry has become corrupted for some reason.
+
+
+
+[.* may .*][.* either .* or .*]
+End-to-end revalidation may be requested either when the client does not have its own local cached copy, in which case we call it "unspecified end-to-end revalidation", or when the client does have a local cached copy, in which case we call it "specific end-to-end revalidation."
+
+
+
+[.* can .*]
+The client can specify these three kinds of action using Cache- Control request directives:
+
+
+
+[.* might .*]
+When an intermediate cache is forced, by means of a max-age=0 directive, to revalidate its own cache entry, and the client has supplied its own validator in the request, the supplied validator might differ from the validator currently stored with the cache entry.
+
+
+
+[.* might .*]
+However, the choice of validator might affect performance.
+
+
+
+[.* can .*]
+If the server replies with 304 (Not Modified), then the cache can return its now validated copy to the client with a 200 (OK) response.
+
+
+
+[.* can .*]
+If the server replies with a new entity and cache validator, however, the intermediate cache can compare the returned validator with the one provided in the client's request, using the strong comparison function.
+
+
+
+[.* may .*][.* has .* to .*]
+In some cases, such as times of extremely poor network connectivity, a client may want a cache to return only those responses that it currently has stored, and not to reload or revalidate with the origin server.
+
+
+
+[.* may .*]
+To do this, the client may include the only-if-cached directive in a request.
+
+
+
+[.* either .* or .*]
+If it receives this directive, a cache SHOULD either respond using a cached entry that is consistent with the other constraints of the request, or respond with a 504 (Gateway Timeout) status.
+
+
+
+[.* has .* to .*]
+Because a cache MAY be configured to ignore a server's specified expiration time, and because a client request MAY include a max- stale directive (which has a similar effect), the protocol also includes a mechanism for the origin server to require revalidation of a cache entry on any subsequent use.
+
+
+
+[.* could .*]
+Servers SHOULD send the must-revalidate directive if and only if failure to revalidate a request on the entity could result in incorrect operation, such as a silently unexecuted financial transaction.
+
+
+
+[.* has .* to .*]
+The proxy-revalidate directive has the same meaning as the must- revalidate directive, except that it does not apply to non-shared user agent caches.
+
+
+
+[.* can .*][.* has .* to .*]
+It can be used on a response to an authenticated request to permit the user's cache to store and later return the response without needing to revalidate it (since it has already been authenticated once by that user), while still requiring proxies that service many users to revalidate each time (in order to make sure that each user has been authenticated).
+
+
+
+[.* need .* to .*]
+Note that such authenticated responses also need the public cache control directive in order to allow them to be cached at all.
+
+
+
+[.* have .* to .*]
+Implementors of intermediate caches (proxies) have found it useful to convert the media type of certain entity bodies.
+
+
+
+[.* can .*]
+The Cache-Control header field can be extended through the use of one or more cache-extension tokens, each with an optional assigned value.
+
+
+
+[.* can .*]
+In this way, extensions to the cache-control directives can be made without requiring changes to the base protocol.
+
+
+
+[.* may .*]
+We define this new directive to mean that, in addition to any non-shared cache, any cache which is shared only by members of the community named within its value may cache the response.
+
+
+
+[.* could .*]
+An origin server wishing to allow the UCI community to use an otherwise private response in their shared cache(s) could do so by including
+
+
+
+[.* may .*]
+Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
+
+
+
+[.* either .* or .*]
+in either the request or the response header fields indicates that the connection SHOULD NOT be considered `persistent' (section 8.1) after the current request/response is complete.
+
+
+
+[.* have .* to .*]
+When present, its value indicates what additional content codings have been applied to the entity-body, and thus what decoding mechanisms must be applied in order to obtain the media-type referenced by the Content-Type header field.
+
+
+
+[.* have .* to .*]
+If multiple encodings have been applied to an entity, the content codings MUST be listed in the order in which they were applied.
+
+
+
+[.* might .*]
+Note that this might not be equivalent to all the languages used within the entity-body.
+
+
+
+[.* might .*]
+This might mean that the sender does not consider it to be specific to any natural language, or that the sender does not know for which language it is intended.
+
+
+
+[.* would .*]
+For example, a rendition of the "Treaty of Waitangi," presented simultaneously in the original Maori and English versions, would call for
+
+
+
+[.* would .*]
+An example would be a beginner's language primer, such as "A First Lesson in Latin," which is clearly intended to be used by an English-literate audience.
+
+
+
+[.* would .*]
+In this case, the Content-Language would properly only include "en".
+
+
+
+[.* would .*]
+The Content-Length entity-header field indicates the size of the entity-body, in decimal number of OCTETs, sent to the recipient or, in the case of the HEAD method, the size of the entity-body that would have been sent had the request been a GET.
+
+
+
+[.* can .*]
+In HTTP, it SHOULD be sent whenever the message's length can be determined prior to being transferred, unless this is prohibited by the rules in section 4.4.
+
+
+
+[.* might .*]
+A server SHOULD provide a Content-Location for the variant corresponding to the response entity; especially in the case where a resource has multiple entities associated with it, and those entities actually have separate locations by which they might be individually accessed, the server SHOULD provide a Content-Location for the particular variant which is returned.
+
+
+
+[.* can .*]
+A cache cannot assume that an entity with a Content-Location different from the URI used to retrieve it can be used to respond to later requests on that Content-Location URI.
+
+
+
+[.* can .*]
+However, the Content- Location can be used to differentiate between multiple entities retrieved from a single requested resource, as described in section 13.6.
+
+
+
+[.* would .*]
+Only origin servers or clients MAY generate the Content-MD5 header field; proxies and gateways MUST NOT generate it, as this would defeat its value as an end-to-end integrity check.
+
+
+
+[.* has .* to .*]
+The MD5 digest is computed based on the content of the entity-body, including any content-coding that has been applied, but not including any transfer-encoding applied to the message-body.
+
+
+
+[.* would .*]
+This has the result that the digest is computed on the octets of the entity-body exactly as, and in the order that, they would be sent if no transfer-encoding were being applied.
+
+
+
+[.* should .*]
+The Content-Range entity-header is sent with a partial entity-body to specify where in the full entity-body the partial body should be applied.
+
+
+
+[.* would .*]
+The Content-Type entity-header field indicates the media type of the entity-body sent to the recipient or, in the case of the HEAD method, the media type that would have been sent had the request been a GET.
+
+
+
+[.* can .*]
+If the server does not have a clock that can provide a
+
+
+
+[.* can .*]
+In practice, the date can be generated at any time during the message origination without affecting its semantic value.
+
+
+
+[.* might .*]
+Some origin server implementations might not have a clock available.
+
+
+
+[.* may .*]
+A stale cache entry may not normally be returned by a cache (either a proxy cache or a user agent cache) unless it is first validated with the origin server (or with an intermediate cache that has a fresh copy of the entity).
+
+
+
+[.* would .*]
+The presence of an Expires header field with a date value of some time in the future on a response that otherwise would by default be non-cacheable indicates that the response is cacheable, unless indicated otherwise by a Cache-Control header field (section 14.9).
+
+
+
+[.* can .*]
+In particular, robot agents SHOULD include this header so that the person responsible for running the robot can be contacted if problems occur on the receiving end.
+
+
+
+[.* might .*]
+The client SHOULD NOT send the From header field without the user's approval, as it might conflict with the user's privacy interests or their site's security policy.
+
+
+
+[.* would .*]
+For example, a request on the origin server for <http://www.w3.org/pub/WWW/> would properly include:
+
+
+
+[.* can .*]
+A client that has one or more entities previously obtained from the resource can verify that one of those entities is current by including a list of their associated entity tags in the If-Match header field.
+
+
+
+[.* would .*][.* have .* to .*]
+If any of the entity tags match the entity tag of the entity that would have been returned in the response to a similar GET request (without the If-Match header) on that resource, or if "*" is given and any current entity exists for that resource, then the server MAY perform the requested method as if the If-Match header field did not exist.
+
+
+
+[.* either .* or .*]
+The result of a request having both an If-Match header field and either an If-None-Match or an If-Modified-Since header fields is undefined by this specification.
+
+
+
+[.* would .*]
+a) If the request would normally result in anything other than a
+
+
+
+[.* might .*]
+Note: If-Modified-Since times are interpreted by the server, whose clock might not be synchronized with the client.
+
+
+
+[.* should .*]
+Note: If a client uses an arbitrary date in the If-Modified-Since header instead of a date taken from the Last-Modified header for the same request, the client should be aware of the fact that this date is interpreted in the server's understanding of time.
+
+
+
+[.* should .*]
+The client should consider unsynchronized clocks and rounding problems due to the different encodings of time between the client and server.
+
+
+
+[.* has .* to .*]
+This includes the possibility of race conditions if the document has changed between the time it was first requested and the If-Modified-Since date of a subsequent request, and the possibility of clock-skew-related problems if the If-Modified- Since date is derived from the client's clock without correction to the server's clock.
+
+
+
+[.* either .* or .*]
+The result of a request having both an If-Modified-Since header field and either an If-Match or an If-Unmodified-Since header fields is undefined by this specification.
+
+
+
+[.* can .*]
+A client that has one or more entities previously obtained from the resource can verify that none of those entities is current by including a list of their associated entity tags in the If-None-Match header field.
+
+
+
+[.* would .*][.* have .* to .*]
+If any of the entity tags match the entity tag of the entity that would have been returned in the response to a similar GET request (without the If-None-Match header) on that resource, or if "*" is given and any current entity exists for that resource, then the server MUST NOT perform the requested method, unless required to do so because the resource's modification date fails to match that supplied in an If-Modified-Since header field in the request.
+
+
+
+[.* can .*]
+The weak comparison function can only be used with GET or HEAD requests.
+
+
+
+[.* either .* or .*]
+The result of a request having both an If-None-Match header field and either an If-Match or an If-Unmodified-Since header fields is undefined by this specification.
+
+
+
+[.* could .*][.* has .* to .*]
+If a client has a partial copy of an entity in its cache, and wishes to have an up-to-date copy of the entire entity in its cache, it could use the Range request-header with a conditional GET (using either or both of If-Unmodified-Since and If-Match.)
+
+
+
+[.* would .*][.* have .* to .*][.* has .* to .*]
+However, if the condition fails because the entity has been modified, the client would then have to make a second request to obtain the entire current entity-body.
+
+
+
+[.* can .*]
+(The server can distinguish between a valid HTTP-date and any form of entity-tag by examining no more than two characters.)
+
+
+
+[.* would .*]
+If the request normally (i.e., without the If-Unmodified-Since header) would result in anything other than a 2xx or 412 status, the If-Unmodified-Since header SHOULD be ignored.
+
+
+
+[.* either .* or .*]
+The result of a request having both an If-Unmodified-Since header field and either an If-None-Match or an If-Modified-Since header fields is undefined by this specification.
+
+
+
+[.* may .*]
+For files, it may be just the file system last-modified time.
+
+
+
+[.* may .*]
+For entities with dynamically included parts, it may be the most recent of the set of last-modify times for its component parts.
+
+
+
+[.* may .*]
+For database gateways, it may be the last-update time stamp of the record.
+
+
+
+[.* may .*]
+For virtual objects, it may be the last time the internal state changed.
+
+
+
+[.* would .*]
+In such cases, where the resource's last modification would indicate some time in the future, the server MUST replace that date with the message origination date.
+
+
+
+[.* can .*]
+The Max-Forwards request-header field provides a mechanism with the TRACE (section 9.8) and OPTIONS (section 9.2) methods to limit the number of proxies or gateways that can forward the request to the next inbound server.
+
+
+
+[.* can .*]
+This can be useful when the client is attempting to trace a request chain which appears to be failing or looping in mid-chain.
+
+
+
+[.* may .*]
+The Max-Forwards value is a decimal integer indicating the remaining number of times this request message may be forwarded.
+
+
+
+[.* might .*]
+The Pragma general-header field is used to include implementation- specific directives that might apply to any recipient along the request/response chain.
+
+
+
+[.* might .*]
+Pragma directives MUST be passed through by a proxy or gateway application, regardless of their significance to that application, since the directives might be applicable to all recipients along the request/response chain.
+
+
+
+[.* might .*]
+However, an intermediate proxy might need to obtain its own credentials by requesting them from the downstream client, which in some circumstances will appear as if the proxy is forwarding the Proxy-Authenticate header field.
+
+
+
+[.* can .*]
+By its choice of last-byte-pos, a client can limit the number of bytes retrieved without knowing the size of the entity.
+
+
+
+[.* might .*]
+In some cases, it might be more appropriate to use the If-Range header (see section 14.27) in addition to the Range header.
+
+
+
+[.* can .*]
+The Retry-After response-header field can be used with a 503 (Service Unavailable) response to indicate how long the service is expected to be unavailable to the requesting client.
+
+
+
+[.* can .*][.* either .* or .*]
+The value of this field can be either an HTTP-date or an integer number of seconds (in decimal) after the time of the response.
+
+
+
+[.* can .*]
+The field can contain multiple product tokens (section 3.8) and comments identifying the server and any significant subproducts.
+
+
+
+[.* might .*]
+Note: Revealing the specific software version of the server might allow the server machine to become more vulnerable to attacks against software that is known to contain security holes.
+
+
+
+[.* may .*]
+Its value may consist of the keyword "trailers" and/or a comma-separated list of extension transfer-coding names with optional accept parameters (as described in section 3.6).
+
+
+
+[.* either .* or .*]
+The implication is that, if given, the client is stating that either all downstream clients are willing to accept trailer fields in the forwarded response, or that it will attempt to buffer the response on behalf of downstream recipients.
+
+
+
+[.* can .*]
+Note: HTTP/1.1 does not define any means to limit the size of a chunked response such that a client can be assured of buffering the entire response.
+
+
+
+[.* has .* to .*]
+The Transfer-Encoding general-header field indicates what (if any) type of transformation has been applied to the message body in order to safely transfer it between the sender and the recipient.
+
+
+
+[.* have .* to .*]
+Transfer-Encoding: chunked If multiple encodings have been applied to an entity, the transfer- codings MUST be listed in the order in which they were applied.
+
+
+
+[.* would .*]
+The Upgrade general-header allows the client to specify what additional communication protocols it supports and would like to use if the server finds it appropriate to switch protocols.
+
+
+
+[.* would .*]
+This eases the difficult transition between incompatible protocols by allowing the client to initiate a request in the more commonly supported protocol while indicating to the server that it would like to use a "better" protocol if available (where "better" is determined by the server, possibly according to the nature of the method and/or resource being requested).
+
+
+
+[.* can .*]
+Any token can be used as a protocol name; however, it will only be useful if both the client and server associate the name with the same protocol.
+
+
+
+[.* can .*]
+The field can contain multiple product tokens (section 3.8) and comments identifying the agent and any subproducts which form a significant part of the user agent.
+
+
+
+[.* might .*]
+A server MAY include a Vary header field with a non-cacheable response that is subject to server-driven negotiation, since this might provide the user agent with useful information about the dimensions over which the response varies at the time of the response.
+
+
+
+[.* may .*]
+The "*" value MUST NOT be generated by a proxy server; it may only be generated by an origin server.
+
+
+
+[.* would .*]
+The protocol-name is optional if and only if it would be "HTTP".
+
+
+
+[.* could .*]
+For example, a request message could be sent from an HTTP/1.0 user agent to an internal proxy code-named "fred", which uses HTTP/1.1 to forward the request to a public proxy at nowhere.com, which completes the request by forwarding it to the origin server at www.ics.uci.edu.
+
+
+
+[.* would .*]
+The request received by www.ics.uci.edu would then have the following Via header field:
+
+
+
+[.* might .*]
+The Warning general-header field is used to carry additional information about the status or transformation of a message which might not be reflected in the message.
+
+
+
+[.* can .*]
+Warning headers can in general be applied to any message, however some specific warn-codes are specific to caches and can only be applied to response messages.
+
+
+
+[.* would .*]
+In other words, Warning headers are those that would be attached to the most recent relevant response.
+
+
+
+[.* can .*][.* might .*]
+User agents are advised to take special care in parsing the WWW- Authenticate field value as it might contain more than one challenge, or if more than one WWW-Authenticate header field is provided, the contents of a challenge itself can contain a comma-separated list of authentication parameters.
+
+
+
+[.* might .*]
+A server is in the position to save personal data about a user's requests which might identify their reading patterns or subjects of interest.
+
+
+
+[.* can .*]
+This information is clearly confidential in nature and its handling can be constrained by law in certain countries.
+
+
+
+[.* might .*]
+Revealing the specific software version of the server might allow the server machine to become more vulnerable to attacks against software that is known to contain security holes.
+
+
+
+[.* can .*]
+Although it can be very useful, its power can be abused if user details are not separated from the information contained in the Referer.
+
+
+
+[.* would .*][.* might .*]
+Even when the personal information has been removed, the Referer header might indicate a private document's URI whose publication would be inappropriate.
+
+
+
+[.* might .*]
+The information sent in the From field might conflict with the user's privacy interests or their site's security policy, and hence it SHOULD NOT be transmitted without the user being able to disable, enable, and modify the contents of the field.
+
+
+
+[.* can .*][.* might .*]
+The User-Agent (section 14.43) or Server (section 14.38) header fields can sometimes be used to determine that a specific client or server have a particular security hole which might be exploited.
+
+
+
+[.* might .*]
+Because the source of a link might be private information or might reveal an otherwise private information source, it is strongly recommended that the user be able to select whether or not the Referer field is sent.
+
+
+
+[.* could .*][.* would .*]
+For example, a browser client could have a toggle switch for browsing openly/anonymously, which would respectively enable/disable the sending of Referer and From information.
+
+
+
+[.* might .*]
+Many existing servers, proxies, and user agents will log the request URI in some place where it might be visible to third parties.
+
+
+
+[.* can .*]
+Servers can use POST-based form submission instead
+
+
+
+[.* can .*]
+Accept request-headers can reveal information about the user to all servers which are accessed.
+
+
+
+[.* can .*][.* would .*]
+The Accept-Language header in particular can reveal information the user would consider to be of a private nature, because the understanding of particular languages is often strongly correlated to the membership of a particular ethnic group.
+
+
+
+[.* could .*][.* would .*]
+An approach that limits the loss of privacy would be for a user agent to omit the sending of Accept-Language headers by default, and to ask the user whether or not to start sending Accept-Language headers to a server if it detects, by looking for any Vary response-header fields generated by the server, that such sending could improve the quality of service.
+
+
+
+[.* can .*]
+Elaborate user-customized accept header fields sent in every request, in particular if these include quality values, can be used by servers as relatively reliable and long-lived user identifiers.
+
+
+
+[.* would .*]
+Such user identifiers would allow content providers to do click-trail tracking, and would allow collaborating content providers to match cross-server click-trails or form submissions of individual users.
+
+
+
+[.* ought .* to .*]
+In environments where proxies are used to enhance privacy, user agents ought to be conservative in offering accept header configuration options to end users.
+
+
+
+[.* could .*]
+As an extreme privacy measure, proxies could filter the accept headers in relayed requests.
+
+
+
+[.* can .*]
+General purpose user agents which provide a high degree of header configurability SHOULD warn users about the loss of privacy which can be involved.
+
+
+
+[.* would .*]
+On such a system, an HTTP server MUST disallow any such construct in the Request-URI if it would otherwise allow access to a resource outside those intended to be accessible via the HTTP server.
+
+
+
+[.* might .*]
+Similarly, files intended for reference only internally to the server (such as access control files, configuration files, and script code) MUST be protected from inappropriate retrieval, since they might contain sensitive information.
+
+
+
+[.* can .*]
+Many platforms already can cache host name lookups locally when appropriate, and they SHOULD be configured to do so.
+
+
+
+[.* could .*]
+If HTTP clients do not observe this rule, they could be spoofed when a previously-accessed server's IP address changes.
+
+
+
+[.* can .*]
+Circumstances under which credential caching can interfere with the application's security model include but are not limited to:
+
+
+
+[.* might .*]
+which the server might wish to cause the client to reprompt the user for credentials.
+
+
+
+[.* can .*]
+Compromise of the systems on which the proxies run can result in serious security and privacy problems.
+
+
+
+[.* have .* to .*]
+Proxies have access to security-related information, personal information about individual users and organizations, and proprietary information belonging to users and content providers.
+
+
+
+[.* might .*]
+A compromised proxy, or a proxy implemented or configured without regard to security and privacy considerations, might be used in the commission of a wide range of potential attacks.
+
+
+
+[.* should .*][.* would .*]
+Proxy operators should protect the systems on which proxies run as they would protect any system that contains or transports sensitive information.
+
+
+
+[.* should .*]
+Log information should be carefully guarded, and appropriate guidelines for use developed and followed.
+
+
+
+[.* can .*]
+Because cache contents persist after an HTTP request is complete, an attack on the cache can reveal information long after a user believes that the information has been removed from the network.
+
+
+
+[.* should .*]
+Therefore, cache contents should be protected as sensitive information.
+
+
+
+[.* should .*]
+Proxy implementors should consider the privacy and security implications of their design and coding decisions, and of the configuration options they provide to proxy operators (especially the default configuration).
+
+
+
+[.* may .*]
+The judicious use of cryptography, when appropriate, may suffice to protect against a broad range of security and privacy attacks.
+
+
+
+[.* have .* to .*]
+In addition to those already mentioned, the following individuals have contributed to this specification: Gary Adams                  Ross Patterson Harald Tveit Alvestrand     Albert Lunde Keith Ball                  John C. Mallery Brian Behlendorf            Jean-Philippe Martin-Flatin Paul Burchard               Mitra Maurizio Codogno            David Morris Mike Cowlishaw              Gavin Nicol Roman Czyborra              Bill Perry Michael A. Dolan            Jeffrey Perry David J. Fiander            Scott Powers Alan Freier                 Owen Rees Marc Hedlund                Luigi Rizzo Greg Herlihy                David Robinson Koen Holtman                Marc Salomon Alex Hopmann                Rich Salz Bob Jernigan                Allan M. Schiffman Shel Kaphan                 Jim Seidman Rohit Khare                 Chuck Shotton John Klensin                Eric W. Sink Martijn Koster              Simon E. Spero Alexei Kosut                Richard N. Taylor David M. Kristol            Robert S. Thau Daniel LaLiberte            Bill (BearHeart) Weinman Ben Laurie                  Francois Yergeau Paul J. Leach               Mary Ellen Zurko Daniel DuBois               Josh Cohen
+
+
+
+[.* can .*]
+The message/http type can be used to enclose a single HTTP request or response message, provided that it obeys the MIME restrictions for all "message" types regarding line length and encodings.
+
+
+
+[.* can .*]
+The application/http type can be used to enclose a pipeline of one or more HTTP request or response messages (not intermixed).
+
+
+
+[.* can .*]
+If not present, the version can be determined from the first line of the body.
+
+
+
+[.* can .*]
+present, the type can be determined from the first line of the body.
+
+
+
+[.* can .*]
+If not present, the version can be determined from the first line of the body.
+
+
+
+[.* can .*]
+present, the type can be determined from the first line of the body.
+
+
+
+[.* may .*]
+1) Additional CRLFs may precede the first boundary string in the
+
+
+
+[.* can .*]
+We therefore recommend that operational applications be tolerant of deviations whenever those deviations can be interpreted unambiguously.
+
+
+
+[.* might .*]
+Proxies and gateways from MIME environments to HTTP also need to be aware of the differences because some conversions might be required.
+
+
+
+[.* might .*]
+Note, however, that this might be complicated by the presence of a Content-Encoding and by the fact that HTTP allows the use of some character sets which do not use octets 13 and 10 to represent CR and LF, as is the case for some multi-byte character sets.
+
+
+
+[.* should .*]
+Implementors should note that conversion will break any cryptographic checksums applied to the original content unless the original content is already in canonical form.
+
+
+
+[.* either .* or .*]
+Since this acts as a modifier on the media type, proxies and gateways from HTTP to MIME-compliant protocols MUST either change the value of the Content-Type header field or decode the entity-body before forwarding the message.
+
+
+
+[.* have .* to .*]
+(Some experimental applications of Content-Type for Internet mail have used a media-type parameter of ";conversions=<content-coding>" to perform a function equivalent to Content-Encoding.
+
+
+
+[.* can .*]
+A process for decoding the "chunked" transfer-coding (section 3.6) can be represented in pseudo-code as:
+
+
+
+[.* might .*]
+MHTML messages being transported by HTTP follow all conventions of MHTML, including line length limitations and folding, canonicalization, etc., since HTTP transports all message-bodies as payload (see section 3.7.2) and does not interpret the content or any MIME header lines that might be contained therein.
+
+
+
+[.* has .* to .*]
+The Content-Disposition response-header field has been proposed as a means for the origin server to suggest a default filename if the user requests that the content is saved to a file.
+
+
+
+[.* should .*]
+If this header is used in a response with the application/octet- stream content-type, the implied suggestion is that the user agent should not display the response, but directly enter a `save response as...' dialog.
+
+
+
+[.* would .*]
+It is worth noting that, at the time of composing this specification (1996), we would expect commercial HTTP/1.1 servers to:
+
+
+
+[.* would .*]
+And we would expect HTTP/1.1 clients to:
+
+
+
+[.* have .* to .*]
+The Internet will also be able to recover the IP addresses that have been allocated for the sole purpose of allowing special-purpose domain names to be used in root-level HTTP URLs.
+
+
+
+[.* might .*]
+Some clients and servers might wish to be compatible with some previous implementations of persistent connections in HTTP/1.0 clients and servers.
+
+
+
+[.* would .*][.* may .*]
+The problem was that some existing 1.0 clients may be sending Keep-Alive to a proxy server that doesn't understand Connection, which would then erroneously forward it to the next inbound server, which would establish the Keep-Alive connection and result in a hung HTTP/1.0 proxy waiting for the close on the response.
+
+
+
+[.* need .* to .*]
+Therefore, we need some other mechanism for indicating a persistent connection is desired, which is safe to use even when talking to an old proxy that ignores Connection.
+
+
+
+[.* had .* to .*][.* has .* to .*]
+This specification has been carefully audited to correct and disambiguate key word usage; RFC 2068 had many problems in respect to the conventions laid out in RFC 2119 [34].
+
+
+
+[.* should .*]
+Clarified which error code should be used for inbound server failures (e.g, DNS failures).
+
+
+
+[.* may .*]
+Transfer-coding and message lengths all interact in ways that required fixing exactly when chunked encoding is used (to allow for transfer encoding that may not be self delimiting); it was important to straighten out exactly how message lengths are computed.
+
+
+
+[.* should .*]
+Quality Values of zero should indicate that "I don't want something" to allow clients to refuse a representation.
+
+
+
+[.* need .* to .*]
+We therefore need a mechanism to allow byteranges with a content-range not indicating the full length of the message.
+
+
+
+[.* can .*][.* would .*]
+Range request responses would become very verbose if all meta-data were always returned; by allowing the server to only send needed headers in a 206 response, this problem can be avoided.
+
+
+
+[.* can .*][.* have .* to .*]
+Rewrite of message transmission requirements to make it much harder for implementors to get it wrong, as the consequences of errors here can have significant impact on the Internet, and to deal with the following problems:
+
+
+
+[.* should .*]
+Made it clear that user-agents should retry requests, not
+
+
+
+[.* should .*]
+Proxies should be able to add Content-Length when appropriate.
+
+
+
+[.* could .*]
+Warnings could be cached incorrectly, or not updated appropriately.
+
+
+
+[.* may .*]
+(Section 13.1.2, 13.2.4, 13.5.2, 13.5.3, 14.9.3, and 14.46) Warning also needed to be a general header, as PUT or other methods may have need for it in requests.
+
+
+
+[.* could .*][.* have .* to .*]
+TE also solves another, obscure, downward interoperability problem that could have occurred due to interactions between authentication trailers, chunked encoding and HTTP/1.0 clients.
+
+
+
+[.* may .*]
+This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this paragraph are included on all such copies and derivative works.
+
+
+
+[.* may .*]
+However, this document itself may not be modified in any way, such as by removing the copyright notice or references to the Internet Society or other Internet organizations, except as needed for the purpose of developing Internet standards in which case the procedures for copyrights defined in the Internet Standards process must be followed, or as required to translate it into languages other than English.
+
+
+

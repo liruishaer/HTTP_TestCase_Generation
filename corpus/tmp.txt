@@ -1,0 +1,7 @@
+And we would expect HTTP/1.1 clients to:
+
+      - recognize the format of the Status-Line for HTTP/1.0 and 1.1
+        responses;
+
+      - understand any valid response in the format of HTTP/0.9, 1.0, or
+        1.1.

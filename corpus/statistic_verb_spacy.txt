@@ -156,7 +156,6 @@ increment,7
 deflate,7
 access,7
 publish,7
-service,7
 prohibit,7
 observe,6
 look,6

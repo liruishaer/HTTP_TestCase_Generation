@@ -14,4 +14,12 @@ def my_stemming(content):
     print(s)
     pass
 
-my_stemming('a requests')
+# my_stemming('a requests')
+
+
+a = '1'
+b = '2'
+c = '3'
+d = '4'
+result = ' '.join([a,b,c,d])
+print(result)

@@ -1,4 +1,7 @@
 # -*- coding=utf-8 -*-
+'''
+function: 过滤带有情态动词的句子
+'''
 from global_config import *
 
 def get_sentences(rfc_file):

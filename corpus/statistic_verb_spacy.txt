@@ -211,7 +211,6 @@ extract,4
 discuss,4
 augment,4
 travel,4
-verify,4
 examine,4
 accomplish,4
 adopt,4
@@ -234,7 +233,6 @@ reference,3
 lose,3
 trace,3
 protocol,3
-feature,3
 render,3
 rank,3
 assure,3

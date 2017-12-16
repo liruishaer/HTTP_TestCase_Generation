@@ -26,7 +26,7 @@ Modal_Words = ['could','should','must','shall','can','would','may','might','need
 modal_patern = '(.*( could| should| mush| shall| can| would| may| might| have .* to | had .* to |' \
                ' having .* to | has .* to | either .* or | neither .* nor | ought .* to | need .* to ).*)'
 
-modal_pattern_list = ['.* could .*','.* should .*','.* mush .*','.* shall .*',
+modal_pattern_list = ['.* could .*','.* should .*','.* must .*','.* shall .*',
                       '.* can .*','.* would .*','.* may .*','.* might .*',
                       '.* have .* to .*','.* had .* to .*','.* having .* to .*',
                       '.* has .* to .*','.* either .* or .*','.* neither .* nor .*',

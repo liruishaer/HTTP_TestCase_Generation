@@ -2,24 +2,10 @@
 from nltk.stem.wordnet import WordNetLemmatizer
 import re
 
-def my_stemming(content):
-    word_list = re.compile('\s+').split(content)
-    print(word_list)
-    cont_list = []
-    for w in word_list:
-        if w not in stopwds:
-            cont_list.append(w)
-    wnl = WordNetLemmatizer()
-    s = wnl.lemmatize('a request')
-    print(s)
-    pass
-
-# my_stemming('a requests')
+# sentence = 'A server MUST respond with a 400 status code to any HTTP/1.1 ' \
+#            'request message that lacks a Host header feld and to any request ' \
+#            'message that contains more than one Host header feld or a Host ' \
+#            'header feld with an invalid feld-value. '
 
 
-a = '1'
-b = '2'
-c = '3'
-d = '4'
-result = ' '.join([a,b,c,d])
-print(result)
+sentence = 'A server MUST respond with a 400 (Bad Request) status code to any HTTP/1.1 request message that lacks a Host header feld and to any request message that contains more than one Host header feld or a Host header feld with an invalid feld-value. '

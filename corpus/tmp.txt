@@ -1,7 +1,32 @@
 And we would expect HTTP/1.1 clients to:
 
-      - recognize the format of the Status-Line for HTTP/1.0 and 1.1
-        responses;
-
       - understand any valid response in the format of HTTP/0.9, 1.0, or
         1.1.
+
+14.38 Server
+
+   The Server response-header field contains information about the
+   software used by the origin server to handle the request
+
+   The field can contain multiple product tokens (section 3.8) and comments
+   identifying the server and any significant subproducts. The product
+   tokens are listed in order of their significance for identifying the
+   application.
+
+
+   113 Heuristic expiration
+     MUST be included if the cache heuristically chose a freshness
+     lifetime greater than 24 hours and the response's age is greater
+     than 24 hours.
+
+      - Clients which have been idle for an extended period following
+        which the server might wish to cause the client to reprompt the
+        user for credentials.
+
+      4. Compute T = R * (2**N), where N is the number of previous
+         retries of this request.
+
+      5. Wait either for an error response from the server, or for T
+         seconds (whichever comes first)
+
+

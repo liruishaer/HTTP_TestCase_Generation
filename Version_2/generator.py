@@ -9,7 +9,7 @@ class Generator:
     '''
     解析、生成HTTP Requst的操作类
     '''
-    def __init__(self,conf_path='/home/gqy/Desktop/Http_Gengerator/Version_2/'):
+    def __init__(self,conf_path='//home/lirui/学习/GQY/Version_2/'):
         self.request = http_request.Request()   #Request类的对象
         self.conf_path = conf_path
         
@@ -19,7 +19,7 @@ class Generator:
         解析带有配置选项的文件conf_file,并给self.request的各属性赋值,如:
         * self.request.Headers
         * self.request.Request_Line
-        * self.request.Line_CRLF
+        * self.request.Header_Line_CRLF
         * self.request.End_Line
         '''
 

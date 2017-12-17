@@ -1,5 +1,5 @@
 # -*- coding=utf-8 -*-
-import nltk
+# import nltk
 import re
 import esm
 

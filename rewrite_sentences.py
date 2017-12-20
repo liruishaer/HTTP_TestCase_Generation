@@ -30,6 +30,7 @@ def cut_long_sentence(sentence):
     :param sentence:
     :return:
     '''
+    sentence = "China and America and Russia is big country in the world."
     print(sentence)
     print('************************************')
     doc = nlp(sentence)
@@ -64,6 +65,8 @@ def cut_long_sentence(sentence):
     #     # print(subtree_str)
 
     conj_token = [token for token in doc if token.dep_ in ['conj']]
+    for token in doc:
+        print(token)
     # 合并相连的连接词
     for tk in conj_token[::-1]:
         tk_parent = tk.head.head

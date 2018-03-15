@@ -3,7 +3,7 @@
 function: 过滤带有情态动词的句子
 '''
 from global_config import *
-
+import nltk
 
 def get_sentences(rfc_file):
     sentences = []
@@ -61,7 +61,7 @@ def get_sentences(rfc_file):
     return sentences
 
 
-def match_modal(outfile,rfc_file):
+def match_modal(outfile,rfc_file,pattern_list):
     sentences = get_sentences(rfc_file)
     fout = open(outfile, 'w')
 
@@ -69,7 +69,7 @@ def match_modal(outfile,rfc_file):
         tags = ''
         flag = False
         # for pattern in modal_pattern_list:
-        for pattern in modal_pattern_list:
+        for pattern in pattern_list:
             pattern = pattern.upper()
             results = re.findall(pattern, sent)
             if results:
@@ -91,10 +91,13 @@ def match_modal(outfile,rfc_file):
 
 
 
-match_modal(contain_modal_file_2616,rfc2616_file)
-match_modal(contain_modal_file_7230,rfc7230_file)
+# match_modal(contain_modal_file_2616,rfc2616_file,modal_pattern_list)
+# match_modal(contain_modal_file_7230,rfc7230_file,modal_pattern_list)
 
 
-# match_modal('tmp_chenhe.txt','./corpus/tmp.txt')
+pattern_asn_list = ['::=']
+# match_modal('./rfc_ssl/1_rfc5280_contain_modal_sentence.txt','./rfc_ssl/rfc5280.txt',pattern_asn_list)
+match_modal('./rfc_ssl/1_rfc6818_contain_modal_sentence.txt','./rfc_ssl/rfc6818.txt',pattern_asn_list)
+
 
 

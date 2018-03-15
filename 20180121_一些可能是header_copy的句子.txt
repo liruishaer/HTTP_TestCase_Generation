@@ -1,0 +1,157 @@
+**  single 
+A recipient MAY replace any linear white space with a single SP before interpreting the field value or forwarding the message downstream.
+
+
+
+
+**  single 
+The field value MAY be preceded by any amount of LWS, though a single SP is preferred.
+
+
+**  without 
+Such leading or trailing LWS MAY be removed without changing the semantics of the field value.
+
+
+**  single 
+Any LWS that occurs between field-content MAY be replaced with a single SP before interpreting the field value or forwarding the message downstream.
+
+
+**  multiple 	|	 without 	|	 one 
+It MUST be possible to combine the multiple header fields into one "field-name: field-value" pair, without changing the semantics of the message, by appending each subsequent field-value to the first, each separated by a comma.
+
+
+**  one 
+All responses to the HEAD request method MUST NOT include a message-body, even though the presence of entity- header fields might lead one to believe they do.
+
+
+**  no 
+If no response body is included, the response MUST include a Content-Length field with a field-value of "0".
+
+
+**  no 
+If no Max-Forwards field is present in the request, then the forwarded request MUST NOT include a Max-Forwards field.
+
+
+**  single 
+When a response is generated from a cache entry, the cache MUST include a single Age header field in the response with a value equal to the cache entry's current_age.
+
+
+**  one or more 	|	 one 
+An HTTP/1.1 origin server, upon receiving a conditional request that includes both a Last-Modified date (e.g,, in an If-Modified-Since or If-Unmodified-Since header field) and one or more entity tags (e.g,, in an If-Match, If-None-Match, or If-Range header field) as cache validators, MUST NOT return a response status of 304 (Not Modified) unless doing so is consistent with all of the conditional header fields in the request.
+
+
+**  one or more 	|	 one 
+An HTTP/1.1 caching proxy, upon receiving a conditional request that includes both a Last-Modified date and one or more entity tags as cache validators, MUST NOT return a locally cached response to the client unless that cached response is consistent with all of the conditional header fields in the request.
+
+
+**  one 
+A non-transparent proxy MAY modify or add these fields to a message that does not include no-transform, but if it does so, it MUST add a Warning 214 (Transformation applied) if one does not already appear in the message (see section 14.46).
+
+
+**  more than 	|	 one 
+If a header field- name in the incoming response matches more than one header in the cache entry, all such old headers MUST be replaced.
+
+
+**  multiple 
+A server SHOULD use the Vary header field to inform a cache of what request-header fields were used to select among multiple representations of a cacheable response subject to server-driven negotiation.
+
+
+**  one or more 	|	 one 
+When the cache receives a subsequent request whose Request-URI specifies one or more cache entries including a Vary header field, the cache MUST NOT use such a cache entry to construct a response to the new request unless all of the selecting request-headers present in the new request match the corresponding stored request-headers in the original request.
+
+
+**  no 
+If no Accept-Encoding field is present in a request, the server MAY assume that the client will accept any content coding.
+
+
+**  one 
+When a shared cache (see section 13.7) receives a request containing an Authorization field, it MUST NOT return the corresponding response as a reply to any other request, unless one of the following specific exceptions holds:
+
+
+**  without 
+no-cache If the no-cache directive does not specify a field-name, then a cache MUST NOT use the response to satisfy a subsequent request without successful revalidation with the origin server.
+
+
+**  one or more 	|	 one 
+If the no-cache directive does specify one or more field-names, then a cache MAY use the response to satisfy a subsequent request, subject to any other restrictions on caching.
+
+
+**  without 
+However, the specified field-name(s) MUST NOT be sent in the response to a subsequent request without successful revalidation with the origin server.
+
+
+**  over 
+The Connection general-header field allows the sender to specify options that are desired for that particular connection and MUST NOT be communicated by proxies over further connections.
+
+
+**  one 
+If the server receives a request (other than one including an If- Range request-header field) with an unsatisfiable Range request- header field (that is, all of whose byte-range-spec values have a first-byte-pos value greater than the current length of the selected resource), it SHOULD return a response code of 416 (Requested range not satisfiable) (section 10.4.17).
+
+
+**  one 
+A received message that does not have a Date header field MUST be assigned one by the recipient if the message will be cached by that recipient or gatewayed via a protocol which requires a Date.
+
+
+**  without 
+A client without a clock MUST NOT send a Date header field in a request.
+
+
+**  without 
+The client SHOULD NOT send the From header field without the user's approval, as it might conflict with the user's privacy interests or their site's security policy.
+
+
+**  without 
+If the request would, without the If-Match header field, result in anything other than a 2xx or 412 status, then the If-Match header MUST be ignored.
+
+
+**  no 	|	 single 
+A request intended to update a resource (e.g,, a PUT) MAY include an If-Match header field to signal that the request method MUST NOT be applied if the entity corresponding to the If-Match value (a single entity tag) is no longer a representation of that resource.
+
+
+**  one 
+Instead, if the request method was GET or HEAD, the server SHOULD respond with a 304 (Not Modified) response, including the cache- related header fields (particularly ETag) of one of the entities that matched.
+
+
+**  without 
+If the request would, without the If-None-Match header field, result in anything other than a 2xx or 304 status, then the If-None-Match header MUST be ignored.
+
+
+**  one 
+If the received Max-Forwards value is greater than zero, then the forwarded message MUST contain an updated Max-Forwards field with a value decremented by one (1).
+
+
+**  one or more 	|	 one 
+The recipient of a byte-range- set that includes one or more syntactically invalid byte-range-spec values MUST ignore the header field that includes that byte-range- set.
+
+
+**  no 
+If no Trailer header field is present, the trailer SHOULD NOT include any header fields.
+
+
+**  over 
+A server MAY include a Vary header field with a non-cacheable response that is subject to server-driven negotiation, since this might provide the user agent with useful information about the dimensions over which the response varies at the time of the response.
+
+
+**  single 
+For organizations that have strong privacy requirements for hiding internal structures, a proxy MAY combine an ordered subsequence of Via header field entries with identical received-protocol values into a single such entry.
+
+
+**  without 
+The information sent in the From field might conflict with the user's privacy interests or their site's security policy, and hence it SHOULD NOT be transmitted without the user being able to disable, enable, and modify the contents of the field.
+
+
+**  single 
+In particular, they SHOULD accept any amount of SP or HT characters between fields, even though only a single SP is required.
+
+
+**  single 
+However, HTTP/1.1 messages MAY include a single MIME-Version general-header field to indicate what version of the MIME protocol was used to construct the message.
+
+
+**  one 
+Proxies and gateways from other protocols SHOULD ensure that any Date header field present in a message conforms to one of the HTTP/1.1 formats and rewrite the date if necessary.
+
+
+
+Process finished with exit code 0
+

@@ -1,0 +1,1 @@
+A proxy MUST implement both the client and server requirements of this specification.

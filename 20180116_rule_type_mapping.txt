@@ -1,0 +1,29 @@
+WordNet词林：
+
+
+句向量：
+
+
+
+词袋特征：
+header_copy的种子词：
+1. multiple
+2. more than one, more than a/an, more than, one or more, at least one,at least
+3. lack, lack of, lacking
+4. various, a variety of,diverse
+5. many, little, no
+6. multifarious,multifaceted
+7. a number of
+8. over
+9. several
+10. a large number of
+11. absence
+12. be short of, short of
+13. disappearance
+14. be pressed for
+15. without
+16. missing,loss,omit
+17. shortage, shortage of
+18. leastwise, at least, at the least
+19. single,double,one
+

@@ -4,8 +4,9 @@ from spacy import displacy    # 查看地址：http://127.0.0.1:5000/
 nlp = en_core_web_sm.load()
 
 
-# sentence = 'A server MUST respond with a 400 status code to any HTTP/1.1 request message that lacks a Host header feld and to any request message that contains more than one Host header feld or a Host header feld with an invalid feld-value!'
-sentence = 'China and America is big country  in the world.'
+sentence = 'A server MUST respond with a 400 status code to any HTTP/1.1 request message that lacks a Host header feld and to any request message that contains more than one Host header feld or a Host header feld with an invalid feld-value!'
+# sentence = 'China and America is big country  in the world.'
+sentence = 'All responses to the HEAD request method MUST NOT include a message-body. even though the presence of entity- header fields might lead one to believe they do.'
 
 # 目标句子（分解之后的句子）
 # sentence = 'A server MUST respond with a 400 status code to any HTTP/1.1 request message that lacks a Host header feld;' \
@@ -102,7 +103,10 @@ def cut_long_sentence(sentence):
 
 
 
-
+def demo():
+    doc = nlp(sentence)
+    for span in doc.sents:
+        print(span)
 
 
 
@@ -111,4 +115,5 @@ def cut_long_sentence(sentence):
 
 if __name__ == '__main__':
     # extract_info(sentence)
-    cut_long_sentence(sentence)
+    # cut_long_sentence(sentence)
+    demo()

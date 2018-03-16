@@ -59,7 +59,7 @@ def type_rule_mapping():
     one 后面必须为名词, 不能为形容词/介词； 不好的词：over, without no
     :return:
     '''
-    infile = './corpus/2616_contain_modal_sentences.txt'
+    infile = './corpus/2616_contain_capital_modal_sentences.txt'
     sentence_list = [line.strip() for line in open(infile,'r') if line.strip()!='' and not line.startswith('[.*')]
 
     for sent in sentence_list:

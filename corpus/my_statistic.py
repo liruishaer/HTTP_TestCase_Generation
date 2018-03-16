@@ -1,10 +1,11 @@
 # -*- coding=utf-8 -*-
 import re
-import nltk
-import nltk.stem
-from nltk.corpus import stopwords
-import en_core_web_sm
-nlp = en_core_web_sm.load()
+from collections import defaultdict
+# import nltk
+# import nltk.stem
+# from nltk.corpus import stopwords
+# import en_core_web_sm
+# nlp = en_core_web_sm.load()
 
 def get_sentences(rfc_file):
     sentences = []
@@ -112,4 +113,53 @@ def statistic_verbword_spacy(outfile,rfc_file1,rfc_file2):
     fout.close()
 
 
-statistic_verbword_spacy('statistic_verb_spacy.txt','RFC2616.txt','RFC7230.txt')
+def statistic_modalwords(modal_sentence_file):
+    total_sent_num = 0
+    modal_sent_num_dict = defaultdict(int)
+    count = 0
+    modal_times_dict = defaultdict(int)
+    more_than_once_modal_dict = defaultdict(int)
+
+    for line in open(modal_sentence_file,'r'):
+        count += 1
+        if count % 5 != 1:
+            continue
+        total_sent_num += 1
+        line = line.strip()
+        if line == '':
+            continue
+        # [.* SHOULD .*]	[.* MUST .*]
+        line = line.replace('[.*','').replace('.*]','')
+        modal_lst = [modal.strip() for modal in re.compile('\t').split(line) if modal.strip()!='']
+        for modal in modal_lst:
+            modal_sent_num_dict[modal] += 1
+        modal_times_dict[len(modal_lst)] += 1
+
+        if len(modal_lst) > 1:
+            for modal in modal_lst:
+                more_than_once_modal_dict[modal] += 1
+
+
+    # 排序，输出
+    modal_sent_num_dict = sorted(modal_sent_num_dict.items(), key=lambda x:x[1],reverse=True)
+    print('rfc:{} 文档中共有 {} 个句子包含情态动词'.format(modal_sentence_file, total_sent_num))
+
+    print('{word} 出现在 {num} 个句子中')
+    for key,value in modal_sent_num_dict:
+        print('{},{}'.format(key, value))
+
+    print('有 {num} 个句子出现情态动词 {num} 次')
+    for key,value in sorted(modal_times_dict.items(), key=lambda x:x[1], reverse=True):
+        print('{},{}'.format(value, key))
+
+    print('包含两个及以上情态动词的句子中，{} 出现 {} 次')
+    for key,value in sorted(more_than_once_modal_dict.items(), key=lambda x:x[1], reverse=True):
+        print('{},{}'.format(key, value))
+
+
+
+
+
+# statistic_verbword_spacy('statistic_verb_spacy.txt','RFC2616.txt','RFC7230.txt')
+# statistic_modalwords('7230_contain_capital_modal_sentences.txt')
+statistic_modalwords('2616_contain_all_modal_sentences.txt')

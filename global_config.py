@@ -7,9 +7,8 @@ import esm
 # 文件名
 rfc7230_file = './corpus/RFC7230.txt'
 rfc2616_file = './corpus/RFC2616.txt'
-tmp_file = './corpus/tmp.txt'
-contain_modal_file_7230 = './corpus/7230_contain_modal_sentences.txt'
-contain_modal_file_2616 = './corpus/2616_contain_modal_sentences.txt'
+contain_modal_file_7230 = './corpus/7230_contain_capital_modal_sentences.txt'
+contain_modal_file_2616 = './corpus/2616_contain_capital_modal_sentences.txt'
 
 
 # 变量

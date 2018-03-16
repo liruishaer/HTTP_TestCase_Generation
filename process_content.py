@@ -58,6 +58,7 @@ def get_sentences(rfc_file):
 
     # for sent in sentences:
     #     print(sent)
+    print('get_sentence() over!')
     return sentences
 
 
@@ -65,12 +66,14 @@ def match_modal(outfile,rfc_file,pattern_list):
     sentences = get_sentences(rfc_file)
     fout = open(outfile, 'w')
 
+    pattern_list += [pattern.upper() for pattern in pattern_list]
+    print(pattern_list)
+    print('len pattern list', len(pattern_list))
     for sent in sentences:
         tags = ''
         flag = False
-        # for pattern in modal_pattern_list:
         for pattern in pattern_list:
-            pattern = pattern.upper()
+            # pattern = pattern.upper()
             results = re.findall(pattern, sent)
             if results:
                 flag = True
@@ -94,10 +97,12 @@ def match_modal(outfile,rfc_file,pattern_list):
 # match_modal(contain_modal_file_2616,rfc2616_file,modal_pattern_list)
 # match_modal(contain_modal_file_7230,rfc7230_file,modal_pattern_list)
 
+match_modal('./corpus/7230_contain_all_modal_sentences.txt',rfc7230_file,modal_pattern_list)
 
-pattern_asn_list = ['::=']
+
+# pattern_asn_list = ['::=']
 # match_modal('./rfc_ssl/1_rfc5280_contain_modal_sentence.txt','./rfc_ssl/rfc5280.txt',pattern_asn_list)
-match_modal('./rfc_ssl/1_rfc6818_contain_modal_sentence.txt','./rfc_ssl/rfc6818.txt',pattern_asn_list)
+# match_modal('./rfc_ssl/1_rfc6818_contain_modal_sentence.txt','./rfc_ssl/rfc6818.txt',pattern_asn_list)
 
 
 
